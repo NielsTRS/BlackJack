@@ -77,9 +77,8 @@ def initScores(joueurs, v=0):
     return scores
 
 
-def premierTour(joueurs):
+def premierTour(joueurs, cartes):
     scores = initScores(joueurs)
-    cartes = initPioche(len(joueurs))
     for joueur in joueurs:
         pioche = piocheCarte(cartes, 2)
         print(f"Tour du joueur {joueur} : {pioche}")
@@ -88,7 +87,7 @@ def premierTour(joueurs):
     return scores
 
 
-def gagnant(scores):
+def gagnant(scores):  # géré le cas d'égalité
     max_score_legal = [None, 0]
     for joueur in scores:
         if max_score_legal[1] < scores[joueur] <= 21:
@@ -96,6 +95,49 @@ def gagnant(scores):
     return max_score_legal
 
 
+def continu():  # on ne peut pas utiliser le nom demander dans le document car deja pris dans python ("continue()") pour les boucles
+    rep = input("Continuer ? (oui/non)")
+    while rep != "oui" and rep != "non":
+        rep = input("Continuer ? (oui/non)")
+    if rep == "oui":
+        return True
+    else:
+        return False
+
+
+def tourJoueur(joueurs, scores, j, cartes):
+    print("Nom :", j)
+    print("Score :", scores[j])
+    print("Tour : 2")
+    if j in joueurs:
+        if continu():
+            carte = piocheCarte(cartes)[0]
+            valeur = valeurCarte(carte)
+            scores[j] += valeurCarte(carte)
+            print(carte)
+            if scores[j] + valeur >= 21:
+                joueurs.remove(j)
+        else:
+            joueurs.remove(j)
+
+
+def tourComplet(joueurs, scores, cartes):
+    for nom in scores:
+        tourJoueur(joueurs, scores, nom, cartes)
+
+
+def partieFinie(joueurs):
+    return len(joueurs) == 0
+
+
+def partieComplete(joueurs, scores, cartes):
+    while not (partieFinie(joueurs)):
+        tourComplet(joueurs, scores, cartes)
+
+
 joueurs = initJoueurs(2)
-tour = premierTour(joueurs)
-print(gagnant(tour))
+cartes = initPioche(len(joueurs))
+scores = premierTour(joueurs, cartes)
+partieComplete(joueurs, scores, cartes)
+print(scores)
+print(gagnant(scores))
