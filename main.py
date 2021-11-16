@@ -76,7 +76,7 @@ def initScores(joueurs, v=0):
         scores[joueur] = v
     return scores
 
-
+# demander pour param cartes
 def premierTour(joueurs, cartes):
     scores = initScores(joueurs)
     for joueur in joueurs:
