@@ -142,4 +142,4 @@ partieComplete(joueurs, scores, cartes)
 print(scores)
 print(gagnant(scores))
 
-#test
+#test2
