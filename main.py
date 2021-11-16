@@ -110,7 +110,6 @@ def continu():  # on ne peut pas utiliser le nom demander dans le document car d
         return False
 
 
-# a revoir
 def tourJoueur(joueurs, scores, j, cartes):
     print("Nom :", j)
     print("Score :", scores[j])
