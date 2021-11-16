@@ -1,5 +1,9 @@
 import random
 
+def mise_possible(mise,mise_init):
+    while mise<0 and mise>mise_init:
+        mise=int(input("mise impossible.Donnez une autre mise:"))
+    return mise
 
 def paquet():
     cartes = []
