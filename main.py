@@ -141,3 +141,5 @@ scores = premierTour(joueurs, cartes)
 partieComplete(joueurs, scores, cartes)
 print(scores)
 print(gagnant(scores))
+
+#test
