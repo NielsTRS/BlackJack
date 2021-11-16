@@ -76,6 +76,7 @@ def initScores(joueurs, v=0):
         scores[joueur] = v
     return scores
 
+
 # demander pour param cartes
 def premierTour(joueurs, cartes):
     scores = initScores(joueurs)
@@ -105,6 +106,7 @@ def continu():  # on ne peut pas utiliser le nom demander dans le document car d
         return False
 
 
+# a revoir
 def tourJoueur(joueurs, scores, j, cartes):
     print("Nom :", j)
     print("Score :", scores[j])
@@ -113,9 +115,9 @@ def tourJoueur(joueurs, scores, j, cartes):
         if continu():
             carte = piocheCarte(cartes)[0]
             valeur = valeurCarte(carte)
-            scores[j] += valeurCarte(carte)
+            scores[j] += valeur
             print(carte)
-            if scores[j] + valeur >= 21:
+            if scores[j] >= 21:
                 joueurs.remove(j)
         else:
             joueurs.remove(j)
@@ -141,5 +143,3 @@ scores = premierTour(joueurs, cartes)
 partieComplete(joueurs, scores, cartes)
 print(scores)
 print(gagnant(scores))
-
-#test23
