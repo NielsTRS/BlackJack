@@ -1,9 +1,11 @@
 import random
 
-def mise_possible(mise,mise_init):
-    while mise<0 and mise>mise_init:
-        mise=int(input("mise impossible.Donnez une autre mise:"))
+
+def mise_possible(mise, mise_init):
+    while mise < 0 and mise > mise_init:
+        mise = int(input("mise impossible.Donnez une autre mise:"))
     return mise
+
 
 def paquet():
     cartes = []
@@ -76,27 +78,28 @@ def initJoueurs(n):
 
 def initScores(joueurs, v=0):
     scores = {}
-    for joueur in joueurs:
-        scores[joueur] = v
+    for nom_joueur in joueurs:
+        scores[nom_joueur] = [v, True, 0]  # valeur de carte, encore en jeu, nombre de tour
     return scores
 
 
 # demander pour param cartes
 def premierTour(joueurs, cartes):
     scores = initScores(joueurs)
-    for joueur in joueurs:
+    for nom_joueur in joueurs:
         pioche = piocheCarte(cartes, 2)
-        print(f"Tour du joueur {joueur} : {pioche}")
+        print(f"Tour du joueur {nom_joueur} : {pioche}")
         for carte in pioche:
-            scores[joueur] += valeurCarte(carte)
+            scores[nom_joueur][0] += valeurCarte(carte)
+        scores[nom_joueur][2] += 1
     return scores
 
 
 def gagnant(scores):  # géré le cas d'égalité
     max_score_legal = [None, 0]
-    for joueur in scores:
-        if max_score_legal[1] < scores[joueur] <= 21:
-            max_score_legal = [joueur, scores[joueur]]
+    for j in scores:
+        if max_score_legal[1] < scores[j][0] <= 21:
+            max_score_legal = [j, scores[j][0]]
     return max_score_legal
 
 
@@ -110,39 +113,52 @@ def continu():  # on ne peut pas utiliser le nom demander dans le document car d
         return False
 
 
-def tourJoueur(joueurs, scores, j, cartes):
-    print("Nom :", j)
-    print("Score :", scores[j])
-    print("Tour : 2")
-    if j in joueurs:
+def tourJoueur(scores, j, cartes):
+    if j in scores and scores[j][1]:
+        scores[j][2] += 1
+        print("Nom :", j)
+        print("Score :", scores[j][0])
+        print("Tour :", scores[j][2])
         if continu():
             carte = piocheCarte(cartes)[0]
             valeur = valeurCarte(carte)
-            scores[j] += valeur
+            scores[j][0] += valeur
             print(carte)
-            if scores[j] >= 21:
-                joueurs.remove(j)
+            if scores[j][0] >= 21:
+                scores[j][1] = False
         else:
-            joueurs.remove(j)
+            scores[j][1] = False
 
 
-def tourComplet(joueurs, scores, cartes):
+def tourComplet(scores, cartes):
     for nom in scores:
-        tourJoueur(joueurs, scores, nom, cartes)
+        tourJoueur(scores, nom, cartes)
 
 
-def partieFinie(joueurs):
-    return len(joueurs) == 0
+def partieFinie(scores):
+    result = True
+    for j in scores:
+        if scores[j][1]:
+            result = False
+    return result
 
 
-def partieComplete(joueurs, scores, cartes):
-    while not (partieFinie(joueurs)):
-        tourComplet(joueurs, scores, cartes)
+def partieComplete(scores, cartes):
+    while not (partieFinie(scores)):
+        tourComplet(scores, cartes)
 
 
-joueurs = initJoueurs(2)
-cartes = initPioche(len(joueurs))
-scores = premierTour(joueurs, cartes)
-partieComplete(joueurs, scores, cartes)
-print(scores)
-print(gagnant(scores))
+# PROGAMME PRINCIPALE
+nb_joueurs = 0
+while nb_joueurs < 2:
+    nb_joueurs = int(input("Nombre de joueurs : "))
+rejouer = "oui"
+joueurs = initJoueurs(nb_joueurs)
+while rejouer == "oui":
+    cartes = initPioche(len(joueurs))
+    scores = premierTour(joueurs, cartes)
+    partieComplete(scores, cartes)
+    print(scores)
+    print(gagnant(scores))
+    rejouer = input("Rejouer ? (oui/non)")
+print("Fin de la partie")
