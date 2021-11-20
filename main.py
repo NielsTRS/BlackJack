@@ -8,6 +8,10 @@ def mise_possible(mise, mise_init):
 
 
 def paquet():
+    '''
+    Créé un jeu de 52 cartes
+    :return list: Renvoie le jeu de carte
+    '''
     cartes = []
     types = ["pique", "carreau", "trefle", "coeur"]
     for card in range(1, 14):
@@ -27,6 +31,11 @@ def paquet():
 
 
 def valeurCarte(carte):
+    '''
+    Détermine la valeur d'une carte
+    :param str carte: Nom de la carte
+    :return int|None: La valeure de la carte
+    '''
     if carte in paquet():
         id = carte.split()[0]
         if id == "as":
@@ -43,6 +52,11 @@ def valeurCarte(carte):
 
 
 def initPioche(n):
+    '''
+    Création d'une pioche de n paquets de cartes
+    :param int n: nombre de joueur
+    :return list: pioche
+    '''
     n_cartes = []
     while n > 0:
         cartes = paquet()
@@ -57,6 +71,12 @@ def initPioche(n):
 
 
 def piocheCarte(p, nb=1):
+    '''
+    Pioche une ou plusieurs cartes dans le paquet et les enlèves de la liste
+    :param list p: pioche
+    :param int nb: nombre de carte(s) à piocher (1 par défaut)
+    :return list: renvoie les cartes piochés
+    '''
     cartes = []
     while nb >= 1:
         carte = p[0]
@@ -67,6 +87,11 @@ def piocheCarte(p, nb=1):
 
 
 def initJoueurs(n):
+    '''
+    Récupère les noms des n joueurs
+    :param int n: nombre de joueurs
+    :return list: Liste des joueurs
+    '''
     joueurs = []
     i = 1
     while i <= n:
@@ -77,6 +102,12 @@ def initJoueurs(n):
 
 
 def initScores(joueurs, v=0):
+    '''
+    Initialisation des données pour les joueurs
+    :param joueurs list: Liste des joueurs
+    :param int v: Score de commencement
+    :return dict: Dictionnaire de données
+    '''
     scores = {}
     for nom_joueur in joueurs:
         scores[nom_joueur] = [v, True, 0]  # valeur de carte, encore en jeu, nombre de tour
@@ -85,6 +116,12 @@ def initScores(joueurs, v=0):
 
 # demander pour param cartes
 def premierTour(joueurs, cartes):
+    '''
+    Selectionne 2 cartes pour chaque joueurs
+    :param list joueurs: Liste des joueurs
+    :param list cartes: La pioche
+    :return:
+    '''
     scores = initScores(joueurs)
     for nom_joueur in joueurs:
         pioche = piocheCarte(cartes, 2)
@@ -95,15 +132,26 @@ def premierTour(joueurs, cartes):
     return scores
 
 
-def gagnant(scores):  # géré le cas d'égalité
+# géré le cas d'égalité
+def gagnant(scores):
+    '''
+    Détermine si il y a un gagant
+    :param dict scores: Dictionnaire de données des joueurs
+    :return list:
+    '''
     max_score_legal = [None, 0]
     for j in scores:
         if max_score_legal[1] < scores[j][0] <= 21:
-            max_score_legal = [j, scores[j][0]]
+            max_score_legal = [j, scores[j][0]]  # nom du joueur, score
     return max_score_legal
 
 
-def continu():  # on ne peut pas utiliser le nom demander dans le document car deja pris dans python ("continue()") pour les boucles
+# on ne peut pas utiliser le nom demander dans le document car deja pris dans python ("continue()") pour les boucles
+def continu():
+    '''
+    Demande au joueur si il veut continuer de piocher des cartes
+    :return bool:
+    '''
     rep = input("Continuer ? (oui/non)")
     while rep != "oui" and rep != "non":
         rep = input("Continuer ? (oui/non)")
@@ -114,6 +162,13 @@ def continu():  # on ne peut pas utiliser le nom demander dans le document car d
 
 
 def tourJoueur(scores, j, cartes):
+    '''
+    Gestion du tour d'un joueur
+    :param dict scores: Données des joueurs
+    :param str j: Nom d'un joueur
+    :param list cartes: Paquet de cartes
+    :return:
+    '''
     if j in scores and scores[j][1]:
         scores[j][2] += 1
         print("Nom :", j)
@@ -131,19 +186,36 @@ def tourJoueur(scores, j, cartes):
 
 
 def tourComplet(scores, cartes):
+    '''
+    Gestion des tours des joueurs
+    :param dict scores: données des joueurs
+    :param list cartes: paquet de cartes
+    :return:
+    '''
     for nom in scores:
         tourJoueur(scores, nom, cartes)
 
 
 def partieFinie(scores):
+    '''
+    Determine  si la pârtie est fini
+    :param dict scores: Données des joueurs
+    :return:
+    '''
     result = True
     for j in scores:
-        if scores[j][1]:
+        if scores[j][1]:  # si le joueur est encore en jeu
             result = False
     return result
 
 
 def partieComplete(scores, cartes):
+    '''
+    Gestion d'une partie entière
+    :param dict scores: Données des joueurs
+    :param list cartes: Paquet de cartes
+    :return:
+    '''
     while not (partieFinie(scores)):
         tourComplet(scores, cartes)
 
