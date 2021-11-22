@@ -113,6 +113,19 @@ def initScores(joueurs, v=0):
         scores[nom_joueur] = [v, True, 0]  # valeur de carte, encore en jeu, nombre de tour
     return scores
 
+def initMise (joueurs, m=100):
+    '''
+    Initialisation de la mise de depart des joueurs
+    :param joueurs list: Liste des joueurs
+    :param int m: mise de commencement
+    :return dict: Dictionnaire de données
+    '''
+    mises = {}
+    for nom_joueur in joueurs:
+        mises[nom_joueurs] = [m, True, 0] #valeur mise , encore en jeu , nombre de partie
+    return mises
+
+
 
 # demander pour param cartes
 def premierTour(joueurs, cartes):
@@ -122,6 +135,7 @@ def premierTour(joueurs, cartes):
     :param list cartes: La pioche
     :return:
     '''
+    mises = initMise (joueurs)
     scores = initScores(joueurs)
     for nom_joueur in joueurs:
         pioche = piocheCarte(cartes, 2)
