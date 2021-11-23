@@ -126,27 +126,26 @@ def initMise(joueurs, m=100):
 
 
 # demander pour param cartes
-def premierTour(joueurs, cartes):
+def premierTour(joueurs, cartes, mises):
     '''
     Selectionne 2 cartes pour chaque joueurs
     :param list joueurs: Liste des joueurs
     :param list cartes: La pioche
     :return:
     '''
-    mises = initMise(joueurs)
     scores = initScores(joueurs)
     for nom_joueur in joueurs:
         pioche = piocheCarte(cartes, 2)
         print(f"Tour du joueur {nom_joueur} : {pioche}")
-        m = int(input("Votre mise : "))
+        m = int(input(f"Votre mise [1, {mises[nom_joueur][0]}] : "))
         while not mise_possible(m, mises[nom_joueur][0]):
-            m = int(input("Votre mise : "))
+            m = int(input(f"Votre mise [1, {mises[nom_joueur][0]}] : "))
         mises[nom_joueur][0] -= m
         mises[nom_joueur][1] = m
         for carte in pioche:
             scores[nom_joueur][0] += valeurCarte(carte)
         scores[nom_joueur][2] += 1
-    return scores, mises
+    return scores
 
 
 # géré le cas d'égalité
@@ -156,11 +155,12 @@ def gagnant(scores):
     :param dict scores: Dictionnaire de données des joueurs
     :return list:
     '''
-    max_score_legal = [None, 0]
+    max_score_legal = [None, 0, 1]
     for j in scores:
-        if max_score_legal[1] < scores[j][0] <= 21:
-            max_score_legal = [j, scores[j][0]]  # nom du joueur, score
-    return max_score_legal
+        if not (scores[j][1]) and max_score_legal[1] < scores[j][0] <= 21 or (
+                max_score_legal[2] > scores[j][2] and max_score_legal[1] == scores[j][0]):
+            max_score_legal = [j, scores[j][0], scores[j][2]]  # nom du joueur, score
+    return max_score_legal[0]
 
 
 # on ne peut pas utiliser le nom demander dans le document car deja pris dans python ("continue()") pour les boucles
@@ -237,26 +237,35 @@ def partieComplete(scores, cartes):
         tourComplet(scores, cartes)
 
 
+def remiseMises(joueurs, gagnant, scores, mises):
+    mise = 0
+    for nom_joueur in scores:
+        mise += mises[nom_joueur][1]
+        mises[nom_joueur][1] = 0
+        if nom_joueur != gagnant and mises[nom_joueur][0] == 0:
+            joueurs.remove(nom_joueur)
+            mises.pop(nom_joueur)
+    mises[gagnant][0] += mise
+
+
 # PROGAMME PRINCIPALE
 nb_joueurs = 0
 while nb_joueurs < 2:
     nb_joueurs = int(input("Nombre de joueurs : "))
 rejouer = "oui"
 joueurs = initJoueurs(nb_joueurs)
-while rejouer == "oui":
+mises = initMise(joueurs)
+while rejouer == "oui" and len(joueurs) >= 2:
     cartes = initPioche(len(joueurs))
-    tour = premierTour(joueurs, cartes)
-    scores = tour[0]
-    mises = tour[1]
+    scores = premierTour(joueurs, cartes, mises)
     partieComplete(scores, cartes)
-    vainqueur = gagnant(scores)[0]
-    tune = 0
+    vainqueur = gagnant(scores)
     if vainqueur is not None:
-        for nom_joueur in scores:
-            if nom_joueur != vainqueur:
-                tune += mises[nom_joueur][1]
-        mises[vainqueur][0] += tune
-    print(scores)
-    print(mises)
+        remiseMises(joueurs, vainqueur, scores, mises)
+        print("Le gagnant est :", vainqueur)
+    else:
+        print('Aucun gagant !')
     rejouer = input("Rejouer ? (oui/non)")
+if len(joueurs) < 2:
+    print("Il n'y a plus qu'un joueur restant ! Le vainqueur est :", joueurs[0])
 print("Fin de la partie")
