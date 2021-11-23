@@ -122,7 +122,7 @@ def initMise (joueurs, m=100):
     '''
     mises = {}
     for nom_joueur in joueurs:
-        mises[nom_joueurs] = [m, True, 0] #valeur mise , encore en jeu , nombre de partie
+        mises[nom_joueur] = [m, True, 0] #valeur mise , encore en jeu , nombre de partie
     return mises
 
 
