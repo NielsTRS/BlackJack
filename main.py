@@ -2,9 +2,7 @@ import random
 
 
 def mise_possible(mise, mise_init):
-    while mise < 0 and mise > mise_init:
-        mise = int(input("mise impossible.Donnez une autre mise:"))
-    return mise
+    return 0 < mise <= mise_init
 
 
 def paquet():
@@ -113,7 +111,8 @@ def initScores(joueurs, v=0):
         scores[nom_joueur] = [v, True, 0]  # valeur de carte, encore en jeu, nombre de tour
     return scores
 
-def initMise (joueurs, m=100):
+
+def initMise(joueurs, m=100):
     '''
     Initialisation de la mise de depart des joueurs
     :param joueurs list: Liste des joueurs
@@ -122,9 +121,8 @@ def initMise (joueurs, m=100):
     '''
     mises = {}
     for nom_joueur in joueurs:
-        mises[nom_joueur] = [m, True, 0] #valeur mise , encore en jeu , nombre de partie
+        mises[nom_joueur] = [m, 0]  # banque, mise
     return mises
-
 
 
 # demander pour param cartes
@@ -135,15 +133,20 @@ def premierTour(joueurs, cartes):
     :param list cartes: La pioche
     :return:
     '''
-    mises = initMise (joueurs)
+    mises = initMise(joueurs)
     scores = initScores(joueurs)
     for nom_joueur in joueurs:
         pioche = piocheCarte(cartes, 2)
         print(f"Tour du joueur {nom_joueur} : {pioche}")
+        m = int(input("Votre mise : "))
+        while not mise_possible(m, mises[nom_joueur][0]):
+            m = int(input("Votre mise : "))
+        mises[nom_joueur][0] -= m
+        mises[nom_joueur][1] = m
         for carte in pioche:
             scores[nom_joueur][0] += valeurCarte(carte)
         scores[nom_joueur][2] += 1
-    return scores
+    return scores, mises
 
 
 # géré le cas d'égalité
@@ -242,9 +245,18 @@ rejouer = "oui"
 joueurs = initJoueurs(nb_joueurs)
 while rejouer == "oui":
     cartes = initPioche(len(joueurs))
-    scores = premierTour(joueurs, cartes)
+    tour = premierTour(joueurs, cartes)
+    scores = tour[0]
+    mises = tour[1]
     partieComplete(scores, cartes)
+    vainqueur = gagnant(scores)[0]
+    tune = 0
+    if vainqueur is not None:
+        for nom_joueur in scores:
+            if nom_joueur != vainqueur:
+                tune += mises[nom_joueur][1]
+        mises[vainqueur][0] += tune
     print(scores)
-    print(gagnant(scores))
+    print(mises)
     rejouer = input("Rejouer ? (oui/non)")
 print("Fin de la partie")
