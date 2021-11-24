@@ -188,6 +188,7 @@ def tourJoueur(scores, j, cartes):
     '''
     if j in scores and scores[j][1]:
         scores[j][2] += 1
+        print("******************")
         print("Nom :", j)
         print("Score :", scores[j][0])
         print("Tour :", scores[j][2])
@@ -262,9 +263,12 @@ while rejouer == "oui" and len(joueurs) >= 2:
     vainqueur = gagnant(scores)
     if vainqueur is not None:
         remiseMises(joueurs, vainqueur, scores, mises)
+        print("######################")
         print("Le gagnant est :", vainqueur)
     else:
+        print("######################")
         print('Aucun gagant !')
+    print("######################")
     rejouer = input("Rejouer ? (oui/non)")
 if len(joueurs) < 2:
     print("Il n'y a plus qu'un joueur restant ! Le vainqueur est :", joueurs[0])
