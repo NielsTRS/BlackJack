@@ -1,5 +1,6 @@
 from libs.joueurs import *
 from libs.partie import *
+from libs.croupier import *
 
 # demande le nombre de joueur
 nb_joueurs = 0
@@ -8,6 +9,7 @@ while nb_joueurs < 2:
 
 # initialisation des données
 joueurs = initJoueurs(nb_joueurs)
+ajoutCroupier(joueurs)
 jouer_mise = jouerAvecMises()
 mises = initMise(joueurs, jouerAvecMise=jouer_mise)
 

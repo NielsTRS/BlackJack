@@ -8,6 +8,8 @@ def initJoueurs(n):
     i = 1
     while i <= n:
         nom = input(f"Nom du joueur {i} : ")
+        while nom.lower() == "croupier" or nom in joueurs:
+            nom = input(f"Impossible de prendre ce nom, Nom du joueur {i} : ")
         joueurs.append(nom)
         i += 1
     return joueurs

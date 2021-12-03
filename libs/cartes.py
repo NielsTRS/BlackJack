@@ -1,4 +1,5 @@
 import random
+from .croupier import *
 
 
 def paquet():
@@ -24,7 +25,7 @@ def paquet():
     return cartes
 
 
-def valeurCarte(carte):
+def valeurCarte(carte, j):
     """
     Détermine la valeur d'une carte
     :param str carte: Nom de la carte
@@ -33,9 +34,12 @@ def valeurCarte(carte):
     if carte in paquet():
         id = carte.split()[0]
         if id == "as":
-            valeur = 0
-            while valeur != 1 and valeur != 11:
-                valeur = int(input("Valeur voulue (1 ou 11) ?"))
+            if estJoueurCroupier(j):
+                valeur = choixValeurCarteCroupier()
+            else:
+                valeur = 0
+                while valeur != 1 and valeur != 11:
+                    valeur = int(input("Valeur voulue (1 ou 11) ?"))
             return valeur
         elif id == "valet" or id == "dame" or id == "roi":
             return 10

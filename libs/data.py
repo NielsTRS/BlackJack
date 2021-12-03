@@ -1,3 +1,17 @@
+from .croupier import *
+
+
+def mettreMise(mises, joueur):
+    if estJoueurCroupier(joueur):
+        m = choixMiseCroupier(10)
+    else:
+        m = int(input(f"Votre mise [1, {mises[joueur][0]}] : "))
+        while not mise_possible(m, mises[joueur][0]):
+            m = int(input(f"Votre mise [1, {mises[joueur][0]}] : "))
+    mises[joueur][0] -= m
+    mises[joueur][1] = m
+
+
 def initScores(joueurs, v=0):
     """
     Initialisation des données pour les joueurs

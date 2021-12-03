@@ -1,5 +1,6 @@
 from .cartes import *
 from .data import *
+from .croupier import *
 
 
 def premierTour(joueurs, cartes, mises=None):
@@ -11,40 +12,32 @@ def premierTour(joueurs, cartes, mises=None):
     :return dict: Dictionnaire de données
     """
     scores = initScores(joueurs)
-    if mises is not None:
-        for nom_joueur in joueurs:
-            pioche = piocheCarte(cartes, 2)
-            print(f"Tour du joueur {nom_joueur} : {pioche}")
-            m = int(input(f"Votre mise [1, {mises[nom_joueur][0]}] : "))
-            while not mise_possible(m, mises[nom_joueur][0]):
-                m = int(input(f"Votre mise [1, {mises[nom_joueur][0]}] : "))
-            mises[nom_joueur][0] -= m
-            mises[nom_joueur][1] = m
-            for carte in pioche:
-                scores[nom_joueur][0] += valeurCarte(carte)
-            scores[nom_joueur][2] += 1
-    else:
-        for nom_joueur in joueurs:
-            pioche = piocheCarte(cartes, 2)
-            print(f"Tour du joueur {nom_joueur} : {pioche}")
-            for carte in pioche:
-                scores[nom_joueur][0] += valeurCarte(carte)
-            scores[nom_joueur][2] += 1
+    for nom_joueur in joueurs:
+        pioche = piocheCarte(cartes, 2)
+        print(f"Tour du joueur {nom_joueur} : {pioche}")
+        if mises is not None:
+            mettreMise(mises, nom_joueur)
+        for carte in pioche:
+            scores[nom_joueur][0] += valeurCarte(carte, nom_joueur)
+        scores[nom_joueur][2] += 1  # ajout nb tour
     return scores
 
 
-def continu():
+def continu(j):
     """
     Demande au joueur si il veut continuer de piocher des cartes
     :return bool:
     """
-    rep = input("Continuer ? (oui/non)")
-    while rep != "oui" and rep != "non":
-        rep = input("Continuer ? (oui/non)")
-    if rep == "oui":
-        return True
+    if estJoueurCroupier(j):
+        return continuCroupier()
     else:
-        return False
+        rep = input("Continuer ? (oui/non)")
+        while rep != "oui" and rep != "non":
+            rep = input("Continuer ? (oui/non)")
+        if rep == "oui":
+            return True
+        else:
+            return False
 
 
 def tourJoueur(scores, j, cartes):
@@ -60,9 +53,9 @@ def tourJoueur(scores, j, cartes):
         print("Nom :", j)
         print("Score :", scores[j][0])
         print("Tour :", scores[j][2])
-        if continu():
+        if continu(j):
             carte = piocheCarte(cartes)[0]
-            valeur = valeurCarte(carte)
+            valeur = valeurCarte(carte, j)
             scores[j][0] += valeur
             print(carte)
             if scores[j][0] >= 21:
