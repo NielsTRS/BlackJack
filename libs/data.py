@@ -1,9 +1,9 @@
 from .croupier import *
 
 
-def mettreMise(mises, joueur):
+def mettreMise(scores, mises, joueur):
     if estJoueurCroupier(joueur):
-        m = choixMiseCroupier(10)
+        m = choixMiseCroupier(scores, mises, joueur)
     else:
         m = int(input(f"Votre mise [1, {mises[joueur][0]}] : "))
         while not mise_possible(m, mises[joueur][0]):

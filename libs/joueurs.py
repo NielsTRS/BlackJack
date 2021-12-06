@@ -4,13 +4,22 @@ def initJoueurs(n):
     :param int n: nombre de joueurs
     :return list: Liste des joueurs
     """
-    joueurs = []
+    joueurs = {}
     i = 1
     while i <= n:
         nom = input(f"Nom du joueur {i} : ")
         while nom.lower() == "croupier" or nom in joueurs:
             nom = input(f"Impossible de prendre ce nom, Nom du joueur {i} : ")
-        joueurs.append(nom)
+        humain = input(f"Ce joueur est humain ? (oui/non)")
+        while humain != "oui" and humain != "non":
+            humain = input(f"Ce joueur est humain ? (oui/non)")
+        if humain == "oui":
+            joueurs[nom] = [True]
+        else:
+            difficulte = input(f"Choix de l'IA (1 : faible, 2 : moyenne, 3 : forte) : ")
+            while difficulte != 1 and difficulte != 2 and difficulte != 3:
+                difficulte = input(f"Choix de l'IA (1 : faible, 2 : moyenne, 3 : forte) : ")
+            joueurs[nom] = [False, difficulte]
         i += 1
     return joueurs
 

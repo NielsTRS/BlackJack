@@ -25,7 +25,7 @@ def paquet():
     return cartes
 
 
-def valeurCarte(carte, j):
+def valeurCarte(scores, carte, j):
     """
     Détermine la valeur d'une carte
     :param str carte: Nom de la carte
@@ -35,7 +35,7 @@ def valeurCarte(carte, j):
         id = carte.split()[0]
         if id == "as":
             if estJoueurCroupier(j):
-                valeur = choixValeurCarteCroupier()
+                valeur = choixValeurCarteCroupier(scores, j)
             else:
                 valeur = 0
                 while valeur != 1 and valeur != 11:

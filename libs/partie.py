@@ -15,21 +15,21 @@ def premierTour(joueurs, cartes, mises=None):
     for nom_joueur in joueurs:
         pioche = piocheCarte(cartes, 2)
         print(f"Tour du joueur {nom_joueur} : {pioche}")
-        if mises is not None:
-            mettreMise(mises, nom_joueur)
         for carte in pioche:
-            scores[nom_joueur][0] += valeurCarte(carte, nom_joueur)
+            scores[nom_joueur][0] += valeurCarte(scores, carte, nom_joueur)
+        if mises is not None:
+            mettreMise(scores, mises, nom_joueur)
         scores[nom_joueur][2] += 1  # ajout nb tour
     return scores
 
 
-def continu(scores, j):
+def continu(scores, j, joueurs):
     """
     Demande au joueur si il veut continuer de piocher des cartes
     :return bool:
     """
     if estJoueurCroupier(j):
-        return continuCroupier(scores, j)
+        return continuCroupier(scores, j, joueurs)
     else:
         rep = input("Continuer ? (oui/non)")
         while rep != "oui" and rep != "non":
@@ -40,7 +40,7 @@ def continu(scores, j):
             return False
 
 
-def tourJoueur(scores, j, cartes):
+def tourJoueur(scores, j, cartes, joueurs):
     """
     Gestion du tour d'un joueur
     :param dict scores: Données des joueurs
@@ -53,11 +53,11 @@ def tourJoueur(scores, j, cartes):
         print("Nom :", j)
         print("Score :", scores[j][0])
         print("Tour :", scores[j][2])
-        cont = continu(scores, j)
+        cont = continu(scores, j, joueurs)
         print(cont)
         if cont:
             carte = piocheCarte(cartes)[0]
-            valeur = valeurCarte(carte, j)
+            valeur = valeurCarte(scores, carte, j)
             scores[j][0] += valeur
             print(carte)
             if scores[j][0] >= 21:
@@ -66,14 +66,14 @@ def tourJoueur(scores, j, cartes):
             scores[j][1] = False
 
 
-def tourComplet(scores, cartes):
+def tourComplet(scores, cartes, joueurs):
     """
     Gestion des tours des joueurs
     :param dict scores: données des joueurs
     :param list cartes: paquet de cartes
     """
     for nom in scores:
-        tourJoueur(scores, nom, cartes)
+        tourJoueur(scores, nom, cartes, joueurs)
 
 
 def partieFinie(scores):
@@ -89,11 +89,11 @@ def partieFinie(scores):
     return result
 
 
-def partieComplete(scores, cartes):
+def partieComplete(scores, cartes, joueurs):
     """
     Gestion d'une partie entière
     :param dict scores: Données des joueurs
     :param list cartes: Paquet de cartes
     """
     while not (partieFinie(scores)):
-        tourComplet(scores, cartes)
+        tourComplet(scores, cartes, joueurs)

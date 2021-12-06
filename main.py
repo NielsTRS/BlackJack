@@ -21,7 +21,7 @@ while rejouer == "oui" and len(joueurs) >= 2:
 
     # gestion de la partie
     scores = premierTour(joueurs, cartes, mises)
-    partieComplete(scores, cartes)
+    partieComplete(scores, cartes, joueurs)
     vainqueur = gagnant(scores)
 
     if vainqueur is not None:
