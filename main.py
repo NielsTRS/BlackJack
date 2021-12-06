@@ -1,10 +1,10 @@
 from libs.joueurs import *
 from libs.partie import *
-from libs.croupier import *
+from libs.bot import *
 
 # demande le nombre de joueur
 nb_joueurs = 0
-while nb_joueurs < 2:
+while nb_joueurs < 1:
     nb_joueurs = int(input("Nombre de joueurs : "))
 
 # initialisation des données
@@ -37,5 +37,8 @@ while rejouer == "oui" and len(joueurs) >= 2:
     rejouer = input("Rejouer ? (oui/non)")
 
 if len(joueurs) < 2:
-    print("Il n'y a plus qu'un joueur restant ! Le vainqueur est :", joueurs[0])
+    vainqueur = ""
+    for j in joueurs:
+        vainqueur = j
+    print("Il n'y a plus qu'un joueur restant ! Le vainqueur est :", vainqueur)
 print("Fin de la partie")

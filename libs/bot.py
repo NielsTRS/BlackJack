@@ -13,33 +13,51 @@ def ajoutCroupier(joueurs):
     joueurs["croupier"] = [False, choixDifficulteIACroupier()]
 
 
-def choixMiseCroupier(scores, mises, j):
-    proba = (scores[j][0] / 21)
-    mise = round(mises[j][0] * proba)
-    return mise
-
-
-def choixValeurCarteCroupier(scores, j):
+def choixValeurCarte(scores, j):
     if scores[j][0] + 11 <= 21:
         return 11
     else:
         return 1
 
 
-def estJoueurCroupier(joueur):
-    return joueur == "croupier"
+def estJoueurBot(joueur, joueurs):
+    if joueurs[joueur][0]:
+        return False
+    else:
+        return True
 
 
-def continuCroupier(scores, j, joueurs):
+def choixMiseBot(scores, mises, j, joueurs):
     difficulte = joueurs[j][1]
     if difficulte == 1:
-        print("Aleatoire")
-        return IAContinuAleatoire()
+        mise = IAMiseAleatoire(mises, j)
     elif difficulte == 2:
-        print("Moyenne")
-        return IAContinuIntelligent(scores, j)
+        mise = IAMiseIntelligent(scores, mises, j)
     else:
-        return IAContinuMasterClass()
+        mise = IAContinuMasterClass()
+    print(mise)
+    return mise
+
+
+def IAMiseAleatoire(mises, j):
+    return random.randint(0, mises[j][0])
+
+
+def IAMiseIntelligent(scores, mises, j):
+    proba = (scores[j][0] / 21)
+    mise = round(mises[j][0] * proba)
+    return mise
+
+
+def continuBot(scores, j, joueurs):
+    difficulte = joueurs[j][1]
+    if difficulte == 1:
+        continu = IAContinuAleatoire()
+    elif difficulte == 2:
+        continu = IAContinuIntelligent(scores, j)
+    else:
+        continu = IAContinuMasterClass()
+    return continu
 
 
 # IA FACILE (1)

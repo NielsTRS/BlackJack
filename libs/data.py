@@ -1,9 +1,9 @@
-from .croupier import *
+from .bot import *
 
 
-def mettreMise(scores, mises, joueur):
-    if estJoueurCroupier(joueur):
-        m = choixMiseCroupier(scores, mises, joueur)
+def mettreMise(scores, mises, joueur, joueurs):
+    if estJoueurBot(joueur, joueurs):
+        m = choixMiseBot(scores, mises, joueur, joueurs)
     else:
         m = int(input(f"Votre mise [1, {mises[joueur][0]}] : "))
         while not mise_possible(m, mises[joueur][0]):
@@ -56,7 +56,7 @@ def remiseMises(joueurs, gagnant, scores, mises):
             mise += mises[nom_joueur][1]
             mises[nom_joueur][1] = 0
             if nom_joueur != gagnant and mises[nom_joueur][0] == 0:
-                joueurs.remove(nom_joueur)
+                joueurs.pop(nom_joueur)
                 mises.pop(nom_joueur)
         mises[gagnant][0] += mise
 

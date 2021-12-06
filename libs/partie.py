@@ -1,6 +1,6 @@
 from .cartes import *
 from .data import *
-from .croupier import *
+from .bot import *
 
 
 def premierTour(joueurs, cartes, mises=None):
@@ -16,9 +16,9 @@ def premierTour(joueurs, cartes, mises=None):
         pioche = piocheCarte(cartes, 2)
         print(f"Tour du joueur {nom_joueur} : {pioche}")
         for carte in pioche:
-            scores[nom_joueur][0] += valeurCarte(scores, carte, nom_joueur)
+            scores[nom_joueur][0] += valeurCarte(scores, carte, nom_joueur, joueurs)
         if mises is not None:
-            mettreMise(scores, mises, nom_joueur)
+            mettreMise(scores, mises, nom_joueur, joueurs)
         scores[nom_joueur][2] += 1  # ajout nb tour
     return scores
 
@@ -28,8 +28,8 @@ def continu(scores, j, joueurs):
     Demande au joueur si il veut continuer de piocher des cartes
     :return bool:
     """
-    if estJoueurCroupier(j):
-        return continuCroupier(scores, j, joueurs)
+    if estJoueurBot(j, joueurs):
+        return continuBot(scores, j, joueurs)
     else:
         rep = input("Continuer ? (oui/non)")
         while rep != "oui" and rep != "non":
@@ -57,7 +57,7 @@ def tourJoueur(scores, j, cartes, joueurs):
         print(cont)
         if cont:
             carte = piocheCarte(cartes)[0]
-            valeur = valeurCarte(scores, carte, j)
+            valeur = valeurCarte(scores, carte, j, joueurs)
             scores[j][0] += valeur
             print(carte)
             if scores[j][0] >= 21:
