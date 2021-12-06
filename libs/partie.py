@@ -23,13 +23,13 @@ def premierTour(joueurs, cartes, mises=None):
     return scores
 
 
-def continu(j):
+def continu(scores, j):
     """
     Demande au joueur si il veut continuer de piocher des cartes
     :return bool:
     """
     if estJoueurCroupier(j):
-        return continuCroupier()
+        return continuCroupier(scores, j)
     else:
         rep = input("Continuer ? (oui/non)")
         while rep != "oui" and rep != "non":
@@ -53,7 +53,9 @@ def tourJoueur(scores, j, cartes):
         print("Nom :", j)
         print("Score :", scores[j][0])
         print("Tour :", scores[j][2])
-        if continu(j):
+        cont = continu(scores, j)
+        print(cont)
+        if cont:
             carte = piocheCarte(cartes)[0]
             valeur = valeurCarte(carte, j)
             scores[j][0] += valeur
