@@ -6,7 +6,7 @@ from .bot import *
 def premierTour(joueurs, cartes, mises=None):
     """
     Sélectionne 2 cartes pour chaque joueurs
-    :param list joueurs: Liste des joueurs
+    :param dict joueurs: Dictionnaire des joueurs
     :param list cartes: La pioche
     :param dict mises: Dictionnaire des mises pouvant être nul si jeu sans mises
     :return dict: Dictionnaire de données
@@ -23,13 +23,16 @@ def premierTour(joueurs, cartes, mises=None):
     return scores
 
 
-def continu(scores, j, joueurs):
+def continu(scores, nom_joueur, joueurs):
     """
     Demande au joueur si il veut continuer de piocher des cartes
+    :param dict scores: Données des joueurs
+    :param str nom_joueur: Nom d'un joueur
+    :param dict joueurs: Dictionnaire des joueurs
     :return bool:
     """
-    if estJoueurBot(j, joueurs):
-        return continuBot(scores, j, joueurs)
+    if estJoueurBot(nom_joueur, joueurs):
+        return continuBot(scores, nom_joueur, joueurs)
     else:
         rep = input("Continuer ? (oui/non)")
         while rep != "oui" and rep != "non":
@@ -40,28 +43,29 @@ def continu(scores, j, joueurs):
             return False
 
 
-def tourJoueur(scores, j, cartes, joueurs):
+def tourJoueur(scores, nom_joueur, cartes, joueurs):
     """
     Gestion du tour d'un joueur
     :param dict scores: Données des joueurs
-    :param str j: Nom d'un joueur
+    :param str nom_joueur: Nom d'un joueur
     :param list cartes: Paquet de cartes
+    :param dict joueurs: Dictionnaire des joueurs
     """
-    if j in scores and scores[j][1]:
-        scores[j][2] += 1
+    if nom_joueur in scores and scores[nom_joueur][1]:
+        scores[nom_joueur][2] += 1
         print("******************")
-        print("Nom :", j)
-        print("Score :", scores[j][0])
-        print("Tour :", scores[j][2])
-        if continu(scores, j, joueurs):
+        print("Nom :", nom_joueur)
+        print("Score :", scores[nom_joueur][0])
+        print("Tour :", scores[nom_joueur][2])
+        if continu(scores, nom_joueur, joueurs):
             carte = piocheCarte(cartes)[0]
-            valeur = valeurCarte(scores, carte, j, joueurs)
-            scores[j][0] += valeur
+            valeur = valeurCarte(scores, carte, nom_joueur, joueurs)
+            scores[nom_joueur][0] += valeur
             print(carte)
-            if scores[j][0] >= 21:
-                scores[j][1] = False
+            if scores[nom_joueur][0] >= 21:
+                scores[nom_joueur][1] = False
         else:
-            scores[j][1] = False
+            scores[nom_joueur][1] = False
 
 
 def tourComplet(scores, cartes, joueurs):
@@ -69,9 +73,10 @@ def tourComplet(scores, cartes, joueurs):
     Gestion des tours des joueurs
     :param dict scores: données des joueurs
     :param list cartes: paquet de cartes
+    :param dict joueurs: Dictionnaire des joueurs
     """
-    for nom in scores:
-        tourJoueur(scores, nom, cartes, joueurs)
+    for nom_joueur in scores:
+        tourJoueur(scores, nom_joueur, cartes, joueurs)
 
 
 def partieFinie(scores):
@@ -81,8 +86,8 @@ def partieFinie(scores):
     :return bool:
     """
     result = True
-    for j in scores:
-        if scores[j][1]:  # si le joueur est encore en jeu
+    for nom_joueur in scores:
+        if scores[nom_joueur][1]:  # si le joueur est encore en jeu
             result = False
     return result
 
@@ -92,6 +97,7 @@ def partieComplete(scores, cartes, joueurs):
     Gestion d'une partie entière
     :param dict scores: Données des joueurs
     :param list cartes: Paquet de cartes
+    :param dict joueurs: Dictionnaire des joueurs
     """
     while not (partieFinie(scores)):
         tourComplet(scores, cartes, joueurs)
