@@ -15,9 +15,11 @@ def ajoutCroupier(joueurs):
 
 def choixValeurCarte(scores, j):
     if scores[j][0] + 11 <= 21:
-        return 11
+        value = 11
     else:
-        return 1
+        value = 1
+    print("Valeur de carte AS choisi : " + str(value))
+    return value
 
 
 def estJoueurBot(joueur, joueurs):
@@ -35,7 +37,7 @@ def choixMiseBot(scores, mises, j, joueurs):
         mise = IAMiseIntelligent(scores, mises, j)
     else:
         mise = IAContinuMasterClass()
-    print(mise)
+    print(f"Mise du joueur : {j} :  {mise}")
     return mise
 
 

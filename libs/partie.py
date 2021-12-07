@@ -53,9 +53,7 @@ def tourJoueur(scores, j, cartes, joueurs):
         print("Nom :", j)
         print("Score :", scores[j][0])
         print("Tour :", scores[j][2])
-        cont = continu(scores, j, joueurs)
-        print(cont)
-        if cont:
+        if continu(scores, j, joueurs):
             carte = piocheCarte(cartes)[0]
             valeur = valeurCarte(scores, carte, j, joueurs)
             scores[j][0] += valeur
