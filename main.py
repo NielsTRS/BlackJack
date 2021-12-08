@@ -51,6 +51,8 @@ while rejouer == "oui" and len(joueurs) >= 2:
             rejouer = "non"
     else:
         rejouer = input("Rejouer ? (oui/non)")
+        while rejouer != "oui" and rejouer != "non":
+            rejouer = input("Rejouer ? (oui/non)")
 print(stats)
 if len(joueurs) < 2:
     print("Il n'y a plus qu'un joueur restant ! Le vainqueur est :", list(joueurs.keys())[0])
