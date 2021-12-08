@@ -62,7 +62,7 @@ def choixMiseBot(scores, mises, nom_joueur, joueurs):
     if difficulte == 1:
         mise = IAMiseAleatoire(mises, nom_joueur)
     elif difficulte == 2:
-        mise = IAMiseIntelligent(scores, mises, nom_joueur)
+        mise = IAMiseProba(scores, mises, nom_joueur)
     else:
         mise = IAContinuMasterClass()
     print(f"Mise du joueur {nom_joueur} :  {mise}")
