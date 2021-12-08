@@ -9,7 +9,8 @@ def choixDifficulteIACroupier():
     """
     difficulte = int(input(f"Choix de l'IA du croupier (1 : faible, 2 : moyenne, 3 : intelligente, 4 : impossible) : "))
     while difficulte != 1 and difficulte != 2 and difficulte != 3 and difficulte != 4:
-        difficulte = int(input(f"Choix de l'IA du croupier (1 : faible, 2 : moyenne, 3 : intelligente, 4 : impossible) : "))
+        difficulte = int(
+            input(f"Choix de l'IA du croupier (1 : faible, 2 : moyenne, 3 : intelligente, 4 : impossible) : "))
     return difficulte
 
 
@@ -62,9 +63,11 @@ def choixMiseBot(scores, mises, nom_joueur, joueurs):
     if difficulte == 1:
         mise = IAMiseAleatoire(mises, nom_joueur)
     elif difficulte == 2:
-        mise = IAMiseProba(scores, mises, nom_joueur)
+        mise = IAMiseProba(mises, nom_joueur, scores)
+    elif difficulte == 3:
+        mise = IAMiseIntelligente(mises, nom_joueur, scores, joueurs)
     else:
-        mise = IAContinuMasterClass()
+        mise = IAMiseImpossible(mises, nom_joueur)
     print(f"Mise du joueur {nom_joueur} :  {mise}")
     return mise
 
@@ -79,7 +82,7 @@ def IAMiseAleatoire(mises, nom_joueur):
     return random.randint(0, mises[nom_joueur][0])
 
 
-def IAMiseProba(scores, mises, nom_joueur):
+def IAMiseProba(mises, nom_joueur, scores):
     """
     IA de mise intelligente (mode proba)
     :param dict scores: Données des joueurs
@@ -90,6 +93,18 @@ def IAMiseProba(scores, mises, nom_joueur):
     proba = (scores[nom_joueur][0] / 21)
     mise = round(mises[nom_joueur][0] * proba)
     return mise
+
+
+def IAMiseIntelligente(mises, nom_joueur, scores, joueurs):
+    if scores[nom_joueur][0] == 21:
+        pourcentage = 0.9
+    else:
+        pourcentage = 0.1
+    return round(pourcentage * mises[nom_joueur][0])
+
+
+def IAMiseImpossible(mises, nom_joueur):
+    return round((9 / 10) * mises[nom_joueur][0])
 
 
 def continuBot(scores, nom_joueur, joueurs):
@@ -105,8 +120,10 @@ def continuBot(scores, nom_joueur, joueurs):
         continu = IAContinuAleatoire()
     elif difficulte == 2:
         continu = IAContinuProba(scores, nom_joueur)
+    elif difficulte == 3:
+        continu = IAContinuIntelligente()
     else:
-        continu = IAContinuMasterClass()
+        continu = IAContinuImpossible()
     return continu
 
 
@@ -116,13 +133,16 @@ def IAContinuAleatoire():
 
 
 # IA MOYENNE (2)
-def IAContinuProba(scores, nom_joueur):
-    proba = 1 - (scores[nom_joueur][
-                     0] / 21)  # probabilité de continuer en fonction de son score, si score = 0, proba = 1, si score = 21, proba = 0
-    return proba(proba)
+def IAContinuProba(scores, nom_joueur, proba=None):
+    if proba is None:
+        value = 1 - (scores[nom_joueur][
+                         0] / 21)  # probabilité de continuer en fonction de son score, si score = 0, proba = 1, si score = 21, proba = 0
+    else:
+        value = proba
+    return choixProba(value)
 
 
-def proba(proba):
+def choixProba(proba):
     if proba == 0.5:
         return IAContinuAleatoire()
     else:
@@ -130,6 +150,10 @@ def proba(proba):
 
 
 # IA INTELLIGENTE (3)
-def IAContinuMasterClass():
+def IAContinuIntelligente():
     # faire IA
+    return False
+
+
+def IAContinuImpossible():
     return False
