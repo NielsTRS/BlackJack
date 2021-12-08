@@ -24,17 +24,20 @@ def paquet():
     return cartes
 
 
-def valeurCarte(scores, carte, j, joueurs):
+def valeurCarte(scores, carte, nom_joueur, joueurs):
     """
     Détermine la valeur d'une carte
+    :param dict scores: Données des joueurs
     :param str carte: Nom de la carte
+    :param str nom_joueur: Nom d'un joueur
+    :param dict joueurs: Dictionnaire des joueurs
     :return int|None: La valeur de la carte
     """
     if carte in paquet():
         id = carte.split()[0]
         if id == "as":
-            if estJoueurBot(j, joueurs):
-                valeur = choixValeurCarte(scores, j)
+            if estJoueurBot(nom_joueur, joueurs):
+                valeur = choixValeurCarte(scores, nom_joueur)
             else:
                 valeur = 0
                 while valeur != 1 and valeur != 11:
@@ -67,17 +70,17 @@ def initPioche(n):
     return n_cartes
 
 
-def piocheCarte(p, nb=1):
+def piocheCarte(pioche, nb=1):
     """
     Pioche une ou plusieurs cartes dans le paquet et les enlèves de la liste
-    :param list p: pioche
+    :param list pioche: pioche
     :param int nb: nombre de carte(s) à piocher (1 par défaut)
     :return list: renvoie les cartes piochés
     """
     cartes = []
     while nb >= 1:
-        carte = p[0]
+        carte = pioche[0]
         cartes.append(carte)
-        p.remove(p[0])
+        pioche.remove(pioche[0])
         nb -= 1
     return cartes

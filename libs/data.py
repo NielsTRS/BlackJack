@@ -1,21 +1,28 @@
 from .bot import *
 
 
-def mettreMise(scores, mises, joueur, joueurs):
-    if estJoueurBot(joueur, joueurs):
-        m = choixMiseBot(scores, mises, joueur, joueurs)
+def mettreMise(scores, mises, nom_joueur, joueurs):
+    """
+    Fonction qui permet de mettre une mise en jeu
+    :param dict scores: Données des joueurs
+    :param dict mises: Dictionnaire des mises
+    :param str nom_joueur: Nom d'un joueur
+    :param dict joueurs: Dictionnaire des joueurs
+    """
+    if estJoueurBot(nom_joueur, joueurs):
+        m = choixMiseBot(scores, mises, nom_joueur, joueurs)
     else:
-        m = int(input(f"Votre mise [1, {mises[joueur][0]}] : "))
-        while not mise_possible(m, mises[joueur][0]):
-            m = int(input(f"Votre mise [1, {mises[joueur][0]}] : "))
-    mises[joueur][0] -= m
-    mises[joueur][1] = m
+        m = int(input(f"Votre mise [1, {mises[nom_joueur][0]}] : "))
+        while not mise_possible(m, mises[nom_joueur][0]):
+            m = int(input(f"Votre mise [1, {mises[nom_joueur][0]}] : "))
+    mises[nom_joueur][0] -= m
+    mises[nom_joueur][1] = m
 
 
 def initScores(joueurs, v=0):
     """
     Initialisation des données pour les joueurs
-    :param list joueurs: Liste des joueurs
+    :param dict joueurs: Dictionnaire des joueurs
     :param int v: Score de commencement
     :return dict: Dictionnaire de données
     """
@@ -28,7 +35,7 @@ def initScores(joueurs, v=0):
 def initMise(joueurs, m=100, jouerAvecMise=True):
     """
     Initialisation de la mise de depart des joueurs
-    :param list joueurs: Liste des joueurs
+    :param dict joueurs: Dictionnaire des joueurs
     :param int m: mise de commencement
     :param bool jouerAvecMise: Partie avec ou sans mises
     :return dict|None: Dictionnaire de données ou rien
@@ -45,7 +52,7 @@ def initMise(joueurs, m=100, jouerAvecMise=True):
 def remiseMises(joueurs, gagnant, scores, mises):
     """
     Attribut les mises aux joueurs si le jeu est avec des mises
-    :param list joueurs: Tableau des joueurs de la partie
+    :param dict joueurs: Tableau des joueurs de la partie
     :param str gagnant: Nom du gagnant
     :param dict scores: Dictionnaire de données
     :param dict mises: Dictionnaire des mises
