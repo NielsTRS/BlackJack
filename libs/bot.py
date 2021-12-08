@@ -85,3 +85,8 @@ def IAContinuProba(proba):
 def IAContinuMasterClass():
     # faire IA
     return False
+def IAMiseMasterClass():
+    
+
+
+#PROPOSITION BOT IMPOSSIBLE (SAUF SUR COUP DE CHANCE) qui a obligatoirement 21
