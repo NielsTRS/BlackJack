@@ -14,12 +14,12 @@ def initJoueurs(n):
         while humain != "oui" and humain != "non":
             humain = input(f"Ce joueur est humain ? (oui/non)")
         if humain == "oui":
-            joueurs[nom] = [True]
+            joueurs[nom] = [True, None, None]
         else:
             difficulte = int(input(f"Choix de l'IA pour ce joueur (1 : faible, 2 : moyenne, 3 : intelligente, 4 : impossible) : "))
             while difficulte != 1 and difficulte != 2 and difficulte != 3 and difficulte != 4:
                 difficulte = int(input(f"Choix de l'IA pour ce joueur (1 : faible, 2 : moyenne, 3 : intelligente, 4 : impossible) : "))
-            joueurs[nom] = [False, difficulte]
+            joueurs[nom] = [False, difficulte, None]
         i += 1
     return joueurs
 

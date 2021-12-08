@@ -19,7 +19,7 @@ def ajoutCroupier(joueurs):
     Permet d'ajouter le croupier au jeu
     :param dict joueurs: Dictionnaire des joueurs
     """
-    joueurs["croupier"] = [False, choixDifficulteIACroupier()]
+    joueurs["croupier"] = [False, choixDifficulteIACroupier(), None]
 
 
 def choixValeurCarte(scores, nom_joueur):
@@ -35,6 +35,19 @@ def choixValeurCarte(scores, nom_joueur):
         value = 1
     print("Valeur de carte AS choisi : " + str(value))
     return value
+
+
+def estJoueurCroupier(nom_joueur, joueurs):
+    """
+    Détermine si le joueur est un bot
+    :param str nom_joueur: Nom d'un joueur
+    :param dict joueurs: Dictionnaire des joueurs
+    :return bool: Retourne True si c'est un bot, False sinon
+    """
+    if joueurs[nom_joueur][0] and nom_joueur == "croupier":
+        return False
+    else:
+        return True
 
 
 def estJoueurBot(nom_joueur, joueurs):
@@ -121,7 +134,7 @@ def continuBot(scores, nom_joueur, joueurs):
     elif difficulte == 2:
         continu = IAContinuProba(scores, nom_joueur)
     elif difficulte == 3:
-        continu = IAContinuIntelligente()
+        continu = IAContinuIntelligente(scores, nom_joueur, joueurs)
     else:
         continu = IAContinuImpossible()
     return continu
@@ -150,9 +163,27 @@ def choixProba(proba):
 
 
 # IA INTELLIGENTE (3)
-def IAContinuIntelligente():
-    # faire IA
-    return False
+def IAContinuIntelligente(scores, nom_joueur, joueurs):
+    mon_score = scores[nom_joueur][0]
+    if 0 <= mon_score <= 11:
+        return True
+    elif 18 <= mon_score <= 21:
+        return False
+    else:
+        carte_croupier = -1
+        for joueur in joueurs:
+            if estJoueurCroupier(joueur, joueurs):
+                carte_croupier = joueurs[joueur][2]
+        if mon_score == 12:
+            if 4 <= carte_croupier <= 6:
+                return False
+            else:
+                return True
+        else:
+            if 2 <= carte_croupier <= 6:
+                return False
+            else:
+                return True
 
 
 def IAContinuImpossible():

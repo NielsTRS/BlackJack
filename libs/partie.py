@@ -16,7 +16,9 @@ def premierTour(joueurs, cartes, mises=None):
         pioche = piocheCarte(cartes, 2)
         print(f"Tour du joueur {nom_joueur} : {pioche}")
         for carte in pioche:
-            scores[nom_joueur][0] += valeurCarte(scores, carte, nom_joueur, joueurs)
+            value = valeurCarte(scores, carte, nom_joueur, joueurs)
+            scores[nom_joueur][0] += value
+            joueurs[nom_joueur][2] = value
         if mises is not None:
             mettreMise(scores, mises, nom_joueur, joueurs)
         scores[nom_joueur][2] += 1  # ajout nb tour
