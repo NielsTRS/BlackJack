@@ -174,6 +174,10 @@ def IAContinuIntelligente(scores, nom_joueur, joueurs):
         for joueur in joueurs:
             if estJoueurCroupier(joueur, joueurs):
                 carte_croupier = joueurs[joueur][2]
+        if carte_croupier == -1:
+            for joueur in joueurs:
+                if carte_croupier < joueurs[joueur][2]:
+                    carte_croupier = joueurs[joueur][2]
         if mon_score == 12:
             if 4 <= carte_croupier <= 6:
                 return False
