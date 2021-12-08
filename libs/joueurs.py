@@ -16,9 +16,9 @@ def initJoueurs(n):
         if humain == "oui":
             joueurs[nom] = [True]
         else:
-            difficulte = int(input(f"Choix de l'IA pour ce joueur (1 : faible, 2 : moyenne, 3 : forte) : "))
-            while difficulte != 1 and difficulte != 2 and difficulte != 3:
-                difficulte = int(input(f"Choix de l'IA pour ce joueur (1 : faible, 2 : moyenne, 3 : forte) : "))
+            difficulte = int(input(f"Choix de l'IA pour ce joueur (1 : faible, 2 : moyenne, 3 : intelligente, 4 : impossible) : "))
+            while difficulte != 1 and difficulte != 2 and difficulte != 3 and difficulte != 4:
+                difficulte = int(input(f"Choix de l'IA pour ce joueur (1 : faible, 2 : moyenne, 3 : intelligente, 4 : impossible) : "))
             joueurs[nom] = [False, difficulte]
         i += 1
     return joueurs
