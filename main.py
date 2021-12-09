@@ -1,6 +1,9 @@
+# INF101 - Projet BlackJack
+# @copyright Terese Niels - Chognon Loïc (IMA-1)
+
 from libs.joueurs import *
 from libs.partie import *
-from libs.bot import *
+from libs.bots import *
 
 # demande le nombre de joueur
 nb_joueurs = 0
@@ -53,7 +56,7 @@ while rejouer == "oui" and len(joueurs) >= 2:
         rejouer = input("Rejouer ? (oui/non)")
         while rejouer != "oui" and rejouer != "non":
             rejouer = input("Rejouer ? (oui/non)")
-print(stats)
+print(f"Sur un total de {nb_partie}, voici le nombre de victoires des joueurs : {stats}")
 if len(joueurs) < 2:
     print("Il n'y a plus qu'un joueur restant ! Le vainqueur est :", list(joueurs.keys())[0])
 print("Fin de la partie")

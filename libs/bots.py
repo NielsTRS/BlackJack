@@ -1,3 +1,6 @@
+# INF101 - Projet BlackJack
+# @copyright Terese Niels - Chognon Loïc (IMA-1)
+
 import random
 import numpy
 
@@ -78,7 +81,7 @@ def choixMiseBot(scores, mises, nom_joueur, joueurs):
     elif difficulte == 2:
         mise = IAMiseProba(mises, nom_joueur, scores)
     elif difficulte == 3:
-        mise = IAMiseIntelligente(mises, nom_joueur, scores, joueurs)
+        mise = IAMiseIntelligente(mises, nom_joueur, scores)
     else:
         mise = IAMiseImpossible(mises, nom_joueur)
     print(f"Mise du joueur {nom_joueur} :  {mise}")
@@ -97,7 +100,7 @@ def IAMiseAleatoire(mises, nom_joueur):
 
 def IAMiseProba(mises, nom_joueur, scores):
     """
-    IA de mise intelligente (mode proba)
+    IA de mise (mode proba)
     :param dict scores: Données des joueurs
     :param dict mises: Dictionnaire des mises
     :param str nom_joueur: Nom d'un joueur
@@ -108,7 +111,14 @@ def IAMiseProba(mises, nom_joueur, scores):
     return mise
 
 
-def IAMiseIntelligente(mises, nom_joueur, scores, joueurs):
+def IAMiseIntelligente(mises, nom_joueur, scores):
+    """
+    IA de mise (mode intelligente)
+    :param dict scores: Données des joueurs
+    :param dict mises: Dictionnaire des mises
+    :param str nom_joueur: Nom d'un joueur
+    :return int: La mise
+    """
     if scores[nom_joueur][0] == 21:
         pourcentage = 0.9
     else:
@@ -117,6 +127,12 @@ def IAMiseIntelligente(mises, nom_joueur, scores, joueurs):
 
 
 def IAMiseImpossible(mises, nom_joueur):
+    """
+    IA de mise (mode impossible)
+    :param dict mises: Dictionnaire des mises
+    :param str nom_joueur: Nom d'un joueur
+    :return int: La mise
+    """
     return round((9 / 10) * mises[nom_joueur][0])
 
 
@@ -126,7 +142,7 @@ def continuBot(scores, nom_joueur, joueurs):
     :param dict scores: Données des joueurs
     :param str nom_joueur: Nom d'un joueur
     :param dict joueurs: Dictionnaire des joueurs
-    :return:
+    :return bool: True pour continuer, False sinon
     """
     difficulte = joueurs[nom_joueur][1]
     if difficulte == 1:
@@ -142,49 +158,64 @@ def continuBot(scores, nom_joueur, joueurs):
 
 # IA FACILE (1)
 def IAContinuAleatoire():
+    """
+    IA pour décider si il faut continuer de jouer (mode aleatoire)
+    :return bool: True pour continuer, False sinon
+    """
     return bool(random.choice([True, False]))
 
 
 # IA MOYENNE (2)
 def IAContinuProba(scores, nom_joueur, proba=None):
+    """
+    IA pour décider si il faut continuer de jouer (mode proba)
+    :param dict scores: Données des joueurs
+    :param str nom_joueur: Nom d'un joueur
+    :param int|None proba: Probabilité à affecter
+    :return bool: True pour continuer, False sinon
+    """
     if proba is None:
         value = 1 - (scores[nom_joueur][
                          0] / 21)  # probabilité de continuer en fonction de son score, si score = 0, proba = 1, si score = 21, proba = 0
     else:
         value = proba
-    return choixProba(value)
-
-
-def choixProba(proba):
-    if proba == 0.5:
+    if value == 0.5:
         return IAContinuAleatoire()
     else:
-        return numpy.random.choice([True, False], p=[proba, 1 - proba])
+        return numpy.random.choice([True, False], p=[value, 1 - value])
 
 
 # IA INTELLIGENTE (3)
 def IAContinuIntelligente(scores, nom_joueur, joueurs):
+    """
+    IA pour décider si il faut continuer de jouer (mode intelligent)
+    :param dict scores: Données des joueurs
+    :param str nom_joueur: Nom d'un joueur
+    :param dict joueurs: Dictionnaire des joueurs
+    :return bool: True pour continuer, False sinon
+    """
     mon_score = scores[nom_joueur][0]
     if 0 <= mon_score <= 11:
         return True
     elif 18 <= mon_score <= 21:
         return False
     else:
-        carte_croupier = -1
+        carte = -1
         for joueur in joueurs:
             if estJoueurCroupier(joueur, joueurs):
-                carte_croupier = joueurs[joueur][2]
-        if carte_croupier == -1:
-            for joueur in joueurs:
-                if carte_croupier < joueurs[joueur][2]:
-                    carte_croupier = joueurs[joueur][2]
+                carte = joueurs[joueur][2]  # deuxième carte du croupier
+        if carte == -1:  # si il n'y a plus de croupier
+            # for joueur in joueurs:
+            #     if carte < joueurs[joueur][2]:
+            #         carte = joueurs[joueur][2]
+            return IAContinuProba(scores, nom_joueur)
         if mon_score == 12:
-            if 4 <= carte_croupier <= 6:
+            if 4 <= carte <= 6:
                 return False
             else:
                 return True
         else:
-            if 2 <= carte_croupier <= 6:
+            if 2 <= carte <= 6:
                 return False
             else:
                 return True

@@ -1,4 +1,7 @@
-from .bot import *
+# INF101 - Projet BlackJack
+# @copyright Terese Niels - Chognon Loïc (IMA-1)
+
+from .bots import *
 
 
 def mettreMise(scores, mises, nom_joueur, joueurs):

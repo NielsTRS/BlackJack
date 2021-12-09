@@ -1,6 +1,9 @@
+# INF101 - Projet BlackJack
+# @copyright Terese Niels - Chognon Loïc (IMA-1)
+
 from .cartes import *
 from .data import *
-from .bot import *
+from .bots import *
 
 
 def premierTour(joueurs, cartes, mises=None):

@@ -1,3 +1,6 @@
+# INF101 - Projet BlackJack
+# @copyright Terese Niels - Chognon Loïc (IMA-1)
+
 def initJoueurs(n):
     """
     Récupère les noms des n joueurs

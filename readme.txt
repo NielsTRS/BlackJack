@@ -1,3 +1,7 @@
+INF101 - Projet BlackJack
+@copyright Terese Niels - Chognon Loïc (IMA-1)
+
+
 expliquez les choix que vous avez
 faits, c’est-à-dire les options spécifiques de votre jeu de Blackjack (quelles règles sont prises en compte ou pas,
 interface graphique ou pas, comportement spécifique de votre programme à connaître pour pouvoir tester votre
