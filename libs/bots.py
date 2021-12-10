@@ -10,10 +10,10 @@ def choixDifficulteIACroupier():
     Demande à l'utilisateur le choix de l'IA a appliqué au croupier
     :return int: Numéro du choix
     """
-    difficulte = int(input(f"Choix de l'IA du croupier (1 : faible, 2 : moyenne, 3 : intelligente, 4 : impossible) : "))
-    while difficulte != 1 and difficulte != 2 and difficulte != 3 and difficulte != 4:
+    difficulte = int(input(f"Choix de l'IA du croupier (1 : faible, 2 : moyenne, 3 : intelligente) : "))
+    while difficulte != 1 and difficulte != 2 and difficulte != 3:
         difficulte = int(
-            input(f"Choix de l'IA du croupier (1 : faible, 2 : moyenne, 3 : intelligente, 4 : impossible) : "))
+            input(f"Choix de l'IA du croupier (1 : faible, 2 : moyenne, 3 : intelligente) : "))
     return difficulte
 
 
@@ -80,10 +80,8 @@ def choixMiseBot(scores, mises, nom_joueur, joueurs):
         mise = IAMiseAleatoire(mises, nom_joueur)
     elif difficulte == 2:
         mise = IAMiseProba(mises, nom_joueur, scores)
-    elif difficulte == 3:
-        mise = IAMiseIntelligente(mises, nom_joueur, scores)
     else:
-        mise = IAMiseImpossible(mises, nom_joueur)
+        mise = IAMiseIntelligente(mises, nom_joueur, scores)
     print(f"Mise du joueur {nom_joueur} :  {mise}")
     return mise
 
@@ -126,16 +124,6 @@ def IAMiseIntelligente(mises, nom_joueur, scores):
     return round(pourcentage * mises[nom_joueur][0])
 
 
-def IAMiseImpossible(mises, nom_joueur):
-    """
-    IA de mise (mode impossible)
-    :param dict mises: Dictionnaire des mises
-    :param str nom_joueur: Nom d'un joueur
-    :return int: La mise
-    """
-    return round((9 / 10) * mises[nom_joueur][0])
-
-
 def continuBot(scores, nom_joueur, joueurs):
     """
     Fonction qui appelle la bonne IA de gestion de continuation
@@ -149,10 +137,8 @@ def continuBot(scores, nom_joueur, joueurs):
         continu = IAContinuAleatoire()
     elif difficulte == 2:
         continu = IAContinuProba(scores, nom_joueur)
-    elif difficulte == 3:
-        continu = IAContinuIntelligente(scores, nom_joueur, joueurs)
     else:
-        continu = IAContinuImpossible()
+        continu = IAContinuIntelligente(scores, nom_joueur, joueurs)
     return continu
 
 
@@ -219,7 +205,3 @@ def IAContinuIntelligente(scores, nom_joueur, joueurs):
                 return False
             else:
                 return True
-
-
-def IAContinuImpossible():
-    return False
