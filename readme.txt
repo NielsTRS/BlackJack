@@ -13,7 +13,7 @@ Les parties du jeu qui ont été programmées sont :
 - l'IA est sur 3 niveaux (Facile : aléatoire, Moyen : probabilité, Intelligent : stratégie vue sur internet)
 - statistique en fin de partie comptant le nombre de victoires de chaque joueur
 
-° Règles:
+° Règles :
 - choix du nombre de joueurs
 - choix si le joueur est humain ou bot
 - choix de mise ou non
@@ -38,3 +38,8 @@ La majorité du programme et de la documentation a été fait par Niels
 Loïc a décidé de séparer le code en plusieurs fichiers afin d'augmenter la lisibilité.
 Il a également travaillé sur l'élaboration de l'IA "Intelligente" mais nous avons a la fin décider de trouver une stratégie sur Wikipédia.
 Les tests et verification du respect des règles du BlackJack ont été majoritairement réaliser par Loïc
+
+° Interface graphique :
+Nous avons regardé un moyen de mettre en place une interface graphique via Tkinter.
+Néanmoins, nous n'avons pas trouvé une solution préalable afin de faire l'interface d'une partie avec plus de 2 joueurs.
+Nous avons donc préféré améliorer notre code et de le rendre plus lisible.

@@ -47,10 +47,10 @@ def estJoueurCroupier(nom_joueur, joueurs):
     :param dict joueurs: Dictionnaire des joueurs
     :return bool: Retourne True si c'est un bot, False sinon
     """
-    if joueurs[nom_joueur][0] and nom_joueur == "croupier":
-        return False
-    else:
+    if not joueurs[nom_joueur][0] and nom_joueur == "croupier":
         return True
+    else:
+        return False
 
 
 def estJoueurBot(nom_joueur, joueurs):
@@ -186,12 +186,18 @@ def IAContinuIntelligente(scores, nom_joueur, joueurs):
     elif 18 <= mon_score <= 21:
         return False
     else:
-        carte = -1
-        for joueur in joueurs:
-            if estJoueurCroupier(joueur, joueurs):
-                carte = joueurs[joueur][2]  # deuxième carte du croupier du premier tour
-        if carte == -1:  # si il n'y a plus de croupier
-            return IAContinuProba(scores, nom_joueur)
+        if not estJoueurCroupier(nom_joueur, joueurs):
+            carte = -1
+            for joueur in joueurs:
+                if estJoueurCroupier(joueur, joueurs):
+                    carte = joueurs[joueur][2]  # deuxième carte du croupier
+            if carte == -1:  # si il n'y a plus de croupier
+                return IAContinuProba(scores, nom_joueur)
+        else:
+            carte = -1
+            for joueur in joueurs:
+                if not estJoueurCroupier(joueur, joueurs) and carte < joueurs[joueur][2]:
+                    carte = joueurs[joueur][2]  # deuxième carte d'un joueur
         if mon_score == 12:
             if 4 <= carte <= 6:
                 return False
