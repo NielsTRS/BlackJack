@@ -21,6 +21,7 @@ Les parties du jeu qui ont été programmées sont :
 - donc possibilité de faire jouer un ou plusieurs bots contre le croupier
 - a chaque partie, selection de la mise si c'est un jeu avec mise (il n'y a pas de surmise)
 - possibilité de continuer la partie ou non : si continuation, récupération d'une carte supplémentaire
+- lors du premier tour, chaque joueur (bot et croupier compris) possède une carte retourné
 - fin de partie lorsque : tous les joueurs ont décidé d'arrêter de jouer ou ne peuvent plus jouer
 - vainqueur : celui qui a le plus grand nombre inférieur ou égal à 21 (si tous les joueurs dépassent 21, il n'y a aucun vainqueur)
 - cas d'égalité :
