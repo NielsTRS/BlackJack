@@ -189,11 +189,8 @@ def IAContinuIntelligente(scores, nom_joueur, joueurs):
         carte = -1
         for joueur in joueurs:
             if estJoueurCroupier(joueur, joueurs):
-                carte = joueurs[joueur][2]  # deuxième carte du croupier
+                carte = joueurs[joueur][2]  # deuxième carte du croupier du premier tour
         if carte == -1:  # si il n'y a plus de croupier
-            # for joueur in joueurs:
-            #     if carte < joueurs[joueur][2]:
-            #         carte = joueurs[joueur][2]
             return IAContinuProba(scores, nom_joueur)
         if mon_score == 12:
             if 4 <= carte <= 6:
