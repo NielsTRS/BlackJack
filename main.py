@@ -60,3 +60,4 @@ print(f"Sur un total de {nb_partie}, voici le nombre de victoires des joueurs : 
 if len(joueurs) < 2:
     print("Il n'y a plus qu'un joueur restant ! Le vainqueur est :", list(joueurs.keys())[0])
 print("Fin de la partie")
+input('Appuyez sur une ENTRER pour quitter : ')
